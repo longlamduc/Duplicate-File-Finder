@@ -2,7 +2,7 @@
 
 import argparse
 from os import walk, access, R_OK
-from os.path import join, getsize, islink
+from os.path import join, getsize, islink, isdir
 from hashlib import md5
 from json import loads, dumps
 
@@ -91,7 +91,10 @@ class duplicate_files_finder:
         '''
         to return result
         '''
-        return self.find_duplicate_files(self.scan_files(self.parse_argu()))
+        path = self.parse_argu()
+        if path is None or not isdir(path):
+            exit('Path not found')
+        return self.find_duplicate_files(self.scan_files())
 
 
 if __name__ == "__main__":
