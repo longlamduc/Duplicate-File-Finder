@@ -75,8 +75,8 @@ def find_duplicate_files(list_file_paths):
     find all the duplicate files in list_file_paths by checking checksum
     '''
     result = []
-    group_file_paths = group_files_by_size(list_file_paths)
-    for group in group_file_paths:
+    group_file_size = group_files_by_size(list_file_paths)
+    for group in group_file_size:
         group_checksum = group_files_by_checksum(group)
         for duplicate in group_checksum:
             if len(duplicate) >= 2:
@@ -89,11 +89,11 @@ def check_content(file1, file2):
     '''
     with open(file1, 'rb') as f1, open(file2, 'rb') as f2:
         while True:
-            cmp1 = f1.read(2048)
-            cmp2 = f2.read(2048)
-            if cmp1 != cmp2:
+            content1 = f1.read(2048)
+            content2 = f2.read(2048)
+            if content1 != content2:
                 return False
-            elif not cmp1:
+            elif not content1:
                 return True
 
 def group_file_by_content(list_file_paths):
@@ -116,8 +116,8 @@ def find_duplicate_files_bonus(list_file_paths):
     find all duplicate files in list_file_paths by checking content
     '''
     result = []
-    group_file_paths = group_files_by_size(list_file_paths)
-    for group_size in group_file_paths:
+    group_file_size = group_files_by_size(list_file_paths)
+    for group_size in group_file_size:
         group_content = group_file_by_content(group_size)
         for group in group_content:
             if len(group) >= 2:
