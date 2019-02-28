@@ -1,7 +1,8 @@
-#!usr/bin/env python3
+#!/usr/bin/env python3
+
 import argparse
-from os import walk
-from os.path import join, getsize
+from os import walk, access, R_OK
+from os.path import join, getsize, islink
 from hashlib import md5
 from json import loads, dumps
 
@@ -26,7 +27,9 @@ class duplicate_files_finder:
         list_file = []
         for root, dirs, files in walk(path):
             for file in files:
-                list_file.append(join(root, file))
+                path = join(root, file)
+                if not islink(path) and access(path, R_OK):
+                    list_file.append(path)
         return list_file
 
     def group_files_by_size(self, list_file_paths):
@@ -93,4 +96,4 @@ class duplicate_files_finder:
 
 if __name__ == "__main__":
     finder = duplicate_files_finder()
-    print(dumps(finder.process()))
+    print(dumps(finder.process(), indent=4))
